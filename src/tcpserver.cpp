@@ -38,6 +38,8 @@ int main(int argc, char **argv)
 
 	do
 	{
+		sleep(1);
+		cout << "server is running" << endl;
 		clilen = sizeof(cliaddr);
 		connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
 		if((childpid = fork()) == 0)

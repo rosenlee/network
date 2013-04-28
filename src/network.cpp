@@ -8,7 +8,7 @@
 
 #include "network.h"
 
-void str_echo(int connfd)
+void str_echo_v2(int connfd)
 {
 	char line[MAXLINE];
 	FILE *fpin, *fpout;
@@ -21,6 +21,20 @@ void str_echo(int connfd)
 	}
 }
 
+void str_echo (int sockfd)
+{
+	ssize_t n;
+	char line[MAXLINE];
+	do 
+	{
+		if ((n = read(sockfd,line,MAXLINE)) == -1)
+		{
+			printf("read line failed\n");
+			return;
+		}
+		write(sockfd, line, n);
+	} while(1);
+}
 void err_sys(const char* str, ...)
 {
 	printf("%s\n", str);	
@@ -56,5 +70,19 @@ void Fputs(const char* ptr , FILE *stream)
 	if( fputs(ptr, stream) == EOF)
 	{
 		err_sys("fput error");
+	}
+}
+
+void Inet_pton(int family, const char *strptr, void *addrptr)
+{
+	int n;
+	
+	if ( (n = inet_pton(family, strptr, addrptr)) < 0)
+	{
+		err_sys("inet_pton error for %s", strptr);
+	}
+	else if( n == 0)
+	{
+		err_sys("inet_pton error for %s", strptr);
 	}
 }
