@@ -35,6 +35,8 @@ int main(int argc, char **argv)
 	}
 
 	listen(listenfd, LISTENQ);
+	Signal(SIGCHLD, sig_chld);
+
 
 	do
 	{
@@ -42,6 +44,11 @@ int main(int argc, char **argv)
 		cout << "server is running" << endl;
 		clilen = sizeof(cliaddr);
 		connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
+		if (-1 == connfd)
+		{
+			perror("accept failed");
+			err_sys("accept error");
+		}
 		if((childpid = fork()) == 0)
 		{
 			/* child process */

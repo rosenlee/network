@@ -86,3 +86,52 @@ void Inet_pton(int family, const char *strptr, void *addrptr)
 		err_sys("inet_pton error for %s", strptr);
 	}
 }
+
+
+Sigfunc * signal(int signo, Sigfunc *func)
+{
+	struct sigaction act, oact;
+	
+	act.sa_handler = func;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
+	
+	if(SIGALRM == signo)
+	{
+		// nothing	
+	}
+
+	if(sigaction(signo, &act, &oact) < 0)
+	{
+		return (SIG_ERR);
+	}
+	
+	return (oact.sa_handler);
+}
+
+Sigfunc * Signal(int signo, Sigfunc *func)
+{
+	Sigfunc *sigfunc;
+
+	if ( (sigfunc = signal(signo, func)) == SIG_ERR)
+	{
+		err_sys("signal error");
+	}	
+	else
+	{
+		printf("register signal func succeed\n");
+	}
+	return (sigfunc);
+}
+
+
+void sig_chld(int signo)
+{
+	pid_t pid;
+	int stat;
+	
+	pid = wait(&stat);
+	printf("child %d terminated\n", pid);
+
+	return ;
+}
