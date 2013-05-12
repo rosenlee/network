@@ -5,17 +5,20 @@
 
 CC=g++
 FLAGS=-g
-LIBS=
+LIBS= network.cpp tcpConnect.cpp wrapsock.cpp
 INCLUDE= 
 
 .PHONY: clean
 
-all: tcpclient  tcpserver
+all: tcpclient  tcpserver daytimetcpcli
 
-tcpclient: network.cpp  tcpclient.cpp
+tcpclient: tcpclient.cpp
 	$(CC) $(FLAGS) $(INCLUDE) $(LIBS) $^ -o $@
 
-tcpserver: network.cpp  tcpserver.cpp
+tcpserver: tcpserver.cpp
+	$(CC) $(FLAGS) $(INCLUDE) $(LIBS) $^ -o $@
+
+daytimetcpcli: daytimetcpcli.cpp
 	$(CC) $(FLAGS) $(INCLUDE) $(LIBS) $^ -o $@
 
 

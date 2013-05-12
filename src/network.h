@@ -16,6 +16,7 @@
 #include	<sys/types.h>	/* basic system data types */
 #include	<sys/socket.h>	/* basic socket definitions */
 #include <arpa/inet.h>
+#include <netdb.h>
 
 #include <sys/wait.h>
 
@@ -32,6 +33,9 @@ void err_sys(const char*, ...);
 void err_ret(const char* fmt, ...);
 FILE* Fdopen(int fd, const char *mode);
 char *Fgets(char *ptr, int n, FILE * stream);
+void Getpeername(int fd, struct sockaddr* sa, socklen_t *salenptr);
+int Tcp_connect(const char* host, const char* srv);
+char *Sock_ntop_host(const struct sockaddr *sa, socklen_t salen);
 void Fputs(const char* ptr , FILE *stream);
 void Inet_pton(int family, const char *strptr, void *addrptr);
 void sig_chld(int signo);
