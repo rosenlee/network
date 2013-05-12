@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <syslog.h>
+#include <errno.h>
 #include	<sys/types.h>	/* basic system data types */
 #include	<sys/socket.h>	/* basic socket definitions */
 #include <arpa/inet.h>
@@ -27,6 +29,7 @@ typedef void Sigfunc(int );
 
 void str_echo(int connfd);
 void err_sys(const char*, ...);
+void err_ret(const char* fmt, ...);
 FILE* Fdopen(int fd, const char *mode);
 char *Fgets(char *ptr, int n, FILE * stream);
 void Fputs(const char* ptr , FILE *stream);

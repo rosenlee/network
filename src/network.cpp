@@ -8,6 +8,9 @@
 
 #include "network.h"
 
+static void err_doit(int errnoflag, int level, const char* fmt, va_list ap);
+
+
 void str_echo_v2(int connfd)
 {
 	char line[MAXLINE];
@@ -35,10 +38,56 @@ void str_echo (int sockfd)
 		write(sockfd, line, n);
 	} while(1);
 }
-void err_sys(const char* str, ...)
+
+void err_sys(const char* fmt, ...)
 {
-	printf("%s\n", str);	
-	exit(0);
+//	printf("%s\n", str);	
+	va_list ap;
+
+	va_start(ap, fmt);
+	err_doit(1, LOG_ERR,fmt, ap);		
+	va_end(ap);
+	exit(1);
+}
+
+void err_ret(const char* fmt, ...)
+{
+//	printf("%s\n", str);	
+	va_list ap;
+
+	va_start(ap, fmt);
+	err_doit(1, LOG_INFO,fmt, ap);		
+	va_end(ap);
+	return;
+}
+
+static void err_doit(int errnoflag, int level, const char* fmt, va_list ap)
+{
+	int errno_save, n;
+	char buf[MAXLINE + 1];
+	
+	errno_save = errno;
+	
+	vsnprintf(buf, MAXLINE, fmt, ap);
+	
+	n = strlen(buf);
+	if(errnoflag)
+	{
+		snprintf(buf + n, MAXLINE - n, ": %s", strerror(errno_save));
+	}
+	strcat(buf,"\n");
+/*
+	if (daemon_proc)
+	{
+		syslog(level, buf);
+	}
+	else */
+	{
+		fflush(stdout);
+		fputs(buf, stderr);
+		fflush(stderr);
+	}
+	return;
 }
 
 FILE* Fdopen(int fd, const char *mode)
