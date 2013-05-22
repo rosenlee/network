@@ -56,6 +56,7 @@ int main(int argc, char **argv)
 			str_echo(connfd);
 			exit(0);
 		}
+		printf("I am child server %d\n", childpid);
 		close(connfd); /* parent process close its connect with client */
 	}while(1);
 
