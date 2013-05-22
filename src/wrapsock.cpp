@@ -45,7 +45,7 @@ char *sock_ntop_host(const struct sockaddr *sa, socklen_t salen)
 	break;
 	case AF_UNIX:
 	default:
-		snprintf(str, sizeof(str), "sock_ntop_host: unkown AF_XXX: %d, len %d");
+		snprintf(str, sizeof(str), "sock_ntop_host: unkown AF_XXX: %d, len %d", sa->sa_family, salen);
 		return (str);
 
 	} 
