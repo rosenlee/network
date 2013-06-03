@@ -5,7 +5,7 @@
 
 #include "network.h"
 
-#define SOCKFD_MAX 255
+#define SOCKFD_MAX 255 
 
 void str_cli(FILE *fp, int fd);
 
@@ -33,6 +33,7 @@ int main(int argc, char **argv)
 		// it is child 
 	/* create socket  */
 	sockfdArray[i] = socket(AF_INET,SOCK_STREAM , 0);
+	printf("child has sock: %d\n", sockfdArray[i]);
 
 	/* initialize */
 	bzero(&srvaddr, sizeof(srvaddr));
@@ -51,7 +52,7 @@ int main(int argc, char **argv)
 	    cli_sendMsg(sockfdArray[i]);
 		
 	}
-	printf("child %d birth: %d\n",i, child);
+	printf("child %d birth: %d \n",i, child);
 	// parent do not do anything, just exit
 
 	}
@@ -82,17 +83,22 @@ void cli_sendMsg(int fd)
 {
 	char sendMsg[MAXLINE] = {};
 	char recvline[MAXLINE] = {};
+	static int id = 0;
 
-	sprintf(sendMsg, "%d %s", fd ,"  I am client : \n" );
+	sprintf(sendMsg, "%d %s", id++,"  I am client : \n" );
 
 	while(true)
 	{
+//		printf("client send msg :%s \n",sendMsg );
 		write(fd, sendMsg, strlen(sendMsg));
 		if (read(fd, recvline, MAXLINE) == -1)
 		{
 			err_sys("cli_sendMsg : server terminated permaturely");
 		}
+//		printf("client recv message:%s\n", recvline);
 		Fputs(recvline, stdout);
 		memset(recvline, 0x00, MAXLINE);
 	}
+
+	printf("I exit %d\n", id);	
 }

@@ -10,7 +10,7 @@ INCLUDE=
 
 .PHONY: clean
 
-all: tcpclient  tcpserver daytimetcpcli
+all: tcpclient  tcpserver daytimetcpcli epollSrv
 
 tcpclient: tcpclient.cpp
 	$(CC) $(FLAGS) $(INCLUDE) $(LIBS) $^ -o $@
@@ -21,6 +21,8 @@ tcpserver: tcpserver.cpp
 daytimetcpcli: daytimetcpcli.cpp
 	$(CC) $(FLAGS) $(INCLUDE) $(LIBS) $^ -o $@
 
+epollSrv:epollSrv.cpp
+	$(CC) $(FLAGS) $(INCLUDE) $(LIBS) $^ -o $@
 
 clean:
 	rm -f *.o

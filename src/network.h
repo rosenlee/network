@@ -20,6 +20,11 @@
 #include <netdb.h>
 
 #include <sys/wait.h>
+#include <sys/epoll.h>
+#include <fcntl.h>
+#include <sys/time.h>
+#include <time.h>
+
 
 
 #define  LISTENQ 	1024
@@ -46,7 +51,25 @@ Sigfunc * signal(int signo, Sigfunc *func);
 Sigfunc * Signal(int signo, Sigfunc *func);
 
 
+/*the idea from sparkling */
 
+#define MAX_EVENTS 500
+typedef void (*CALLBACK)(int fd, int events, void *arg); 
+struct myevent_s
+{
+	int fd;
+	void (*call_back)(int fd, int events, void *arg);
+	int events;
+	void *arg;
+	int status; // 1: in epoll wait list, 0 not in
+	char buff[128];
+	int len, s_offset;
+	long last_active;
 
+};
+
+void EventSet(myevent_s *ev, int fd,CALLBACK callback, void *arg); 
+void EventAdd(int epollFd, int events, myevent_s *ev);
+void EventDel(int epollFd, myevent_s *ev);
 
 #endif 
