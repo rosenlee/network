@@ -4,8 +4,9 @@ CFLAGS := -g -Wall
 
 INCLUDEPATH :=..
 #INCLUDE = $(wildcard ../*.h)
-INCLUDE := -I ./ $(INCLUDEPATH)/ \
-		$(INCLUDEPATH)/WIN32-Code/
+INCLUDE := -I ./ \
+	   -I $(INCLUDEPATH)/ \
+	   -I $(INCLUDEPATH)/WIN32-Code/
 
 all: testMinHeap
 
