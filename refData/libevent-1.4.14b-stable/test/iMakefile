@@ -1,0 +1,16 @@
+
+CC = gcc
+CFLAGS := -g -Wall
+
+INCLUDEPATH :=..
+#INCLUDE = $(wildcard ../*.h)
+INCLUDE := -I ./ $(INCLUDEPATH)/ \
+		$(INCLUDEPATH)/WIN32-Code/
+
+all: testMinHeap
+
+testMinHeap: test_min_heap.c $(INCLUDEPATH)/min_heap.h $(INCLUDEPATH)/event.h \
+	  $(INCLUDEPATH)/evutil.h $(INCLUDEPATH)/evutil.c\
+	$(INCLUDEPATH)/WIN32-Code/event-config.h
+	@echo $(INCLUDE)
+	$(CC) $(CFLAGS) $(INCLUDE) $^ -o $@
